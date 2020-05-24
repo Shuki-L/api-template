@@ -1,0 +1,53 @@
+{
+    "name": "vpccc-api",
+    "version": "0.0.1",
+    "description": "VPC - control center api",
+    "main": "index.js",
+    "scripts": {
+        "build": "tsc",
+        "test": "nyc --silent mocha -r ts-node/register 'src/**/*.spec.ts' --exit",
+        "test-coverage": "nyc report && nyc check-coverage",
+        "lint": "tslint -c tslint.json 'src/**/*.ts'",
+        "start": "node dist",
+        "dev": "tsc --watch & DEBUG=sensor* nodemon dist & node -r dotenv/config"
+    },
+    "pre-commit": [
+        "test"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git@www-github.cisco.com:shukile/vpccc-api.git"
+    },
+    "dependencies": {
+        "ajv": "^6.10.0",
+        "aws-sdk": "^2.438.0",
+        "body-parser": "^1.18.3",
+        "cors": "^2.8.5",
+        "express": "^4.16.4",
+        "moment": "^2.24.0",
+        "node-cache": "^4.2.0"
+    },
+    "devDependencies": {
+        "@types/chai": "^4.1.7",
+        "@types/mocha": "^5.2.6",
+        "@types/node": "^11.13.4",
+        "chai": "^4.2.0",
+        "dotenv": "^6.2.0",
+        "mocha": "^6.0.2",
+        "node-mocks-http": "^1.7.3",
+        "nodemon": "^1.18.10",
+        "nyc": "^13.3.0",
+        "pre-commit": "^1.2.2",
+        "sinon": "^7.2.7",
+        "supertest": "^3.4.2",
+        "ts-node": "^8.0.2",
+        "tslint": "^5.13.1",
+        "typescript": "^3.3.3333"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "singleQuote": true,
+        "trailingComma": "all",
+        "printWidth": 120
+    }
+}

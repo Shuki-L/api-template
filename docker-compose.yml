@@ -1,0 +1,17 @@
+version: '2.1'
+services:
+    vpccc-api:
+        container_name: vpccc-api
+        build:
+            context: .
+            dockerfile: Dockerfile
+        # environment:
+        # - AWS_REGION=${AWS_REGION}
+        # - MINI_CONNECTOR_BUCKET=${MINI_CONNECTOR_BUCKET}
+        # - MINI_CONNECTOR_QUEUE=${MINI_CONNECTOR_QUEUE}
+        # - AWS_ENDPOINT_SQS=${AWS_ENDPOINT_SQS}
+        ports:
+            - 8123:8123
+
+networks:
+    default:

@@ -1,2 +1,2 @@
-# vpccc-api
-VPC - control center api
+# template-api
+Template api

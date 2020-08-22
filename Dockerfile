@@ -2,7 +2,7 @@
 FROM node:8.15.1-alpine as build
 
 # Create app directory
-WORKDIR /vpccc-api
+WORKDIR /template-api
 
 # Install app dependencies
 # A wildcard is used to ensure both package.json AND package-lock.json are copied
@@ -23,9 +23,9 @@ RUN npm install && \
 # Stage 2
 FROM node:8.15.1-alpine
 
-WORKDIR /vpccc-api
+WORKDIR /template-api
 
-COPY --from=build /vpccc-api /vpccc-api
+COPY --from=build /template-api /template-api
 
 CMD ["npm", "start"]
 

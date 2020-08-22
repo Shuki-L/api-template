@@ -1,7 +1,7 @@
 version: '2.1'
 services:
-    vpccc-api:
-        container_name: vpccc-api
+    template-api:
+        container_name: template-api
         build:
             context: .
             dockerfile: Dockerfile

@@ -1,12 +1,25 @@
 import bodyParser = require('body-parser');
 import express = require('express');
 import cors = require('cors');
+import mongoose from 'mongoose'
+// var mongoose = require('mongoose');
+
 import health = require('./routes/health');
 import test = require('./routes/test');
 import clusters = require('./routes/clusters');
 import dashboard = require('./routes/dashboard');
 import statuses = require('./routes/statuses');
 import logs = require('./routes/logs');
+
+var configDB = require('./config/database.js');
+
+// configuration ===============================================================
+mongoose.connect(configDB.url, {
+    useMongoClient: true
+}); // connect to our database
+
+
+
 
 const app = express();
 const port = process.env.PORT || 8123;

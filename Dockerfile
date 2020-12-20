@@ -1,5 +1,5 @@
 # Stage 1 - build
-FROM node:8.15.1-alpine as build
+FROM node:12.18.0-alpine as build
 
 # Create app directory
 WORKDIR /template-api
@@ -21,7 +21,7 @@ RUN npm install && \
 # RUN npm install --only=production
 
 # Stage 2
-FROM node:8.15.1-alpine
+FROM node:12.18.0-alpine
 
 WORKDIR /template-api
 

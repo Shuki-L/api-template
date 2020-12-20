@@ -1,6 +1,6 @@
 import express = require('express');
 import { Response, ResponseStatus } from '../entities';
-import ClusterServices from '../services/ClusterServices';
+import ClusterServices from '../services/clusterServices';
 
 const router = express.Router();
 

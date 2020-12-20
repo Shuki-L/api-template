@@ -14,12 +14,18 @@ router.get('/', async (req, res) => {
         const clusterArn = req.query.clusterArn;
         const clusterName = req.query.clusterName;
         const clusterService = new ClusterServices({ region });
-        const clutersinfoRes = await clusterService.getClusterinfo(clusterArn, clusterName);
+        const clutersinfoRes = await clusterService.getClusterinfo(
+            clusterArn,
+            clusterName,
+        );
         const response = { ecs_clustres: clutersinfoRes };
         res.status(200).json(response);
     } catch (error) {
         const statusCode = error.Code || 500;
-        const response = new Response(ResponseStatus.Error, `error occured while getting test`);
+        const response = new Response(
+            ResponseStatus.Error,
+            `error occured while getting test`,
+        );
         res.status(statusCode).json(response);
     }
 });

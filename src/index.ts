@@ -1,8 +1,8 @@
 import bodyParser = require('body-parser');
 import express = require('express');
 import cors = require('cors');
-import mongoose from 'mongoose'
-// var mongoose = require('mongoose');
+
+const mongoose = require('mongoose');
 
 import health = require('./routes/health');
 import test = require('./routes/test');
@@ -11,15 +11,46 @@ import dashboard = require('./routes/dashboard');
 import statuses = require('./routes/statuses');
 import logs = require('./routes/logs');
 
-var configDB = require('./config/database.js');
+const configDB = require('./config/database');
 
 // configuration ===============================================================
 mongoose.connect(configDB.url, {
-    useMongoClient: true
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 }); // connect to our database
+// mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true});
 
+// mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true});
 
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', function () {
+    // we're connected!
 
+    const kittySchema = new mongoose.Schema({
+        name: String,
+    });
+
+    // NOTE: methods must be added to the schema before compiling it with mongoose.model()
+    kittySchema.methods.speak = function () {
+        const greeting = this.name
+            ? 'Meow name is ' + this.name
+            : "I don't have a name";
+        console.log(greeting);
+    };
+
+    const Kitten = mongoose.model('Kitten', kittySchema);
+    const silence = new Kitten({ name: 'Silence' });
+    console.log(silence.name);
+
+    const fluffy = new Kitten({ name: 'fluffy' });
+    fluffy.speak();
+
+    silence.save(function (err, fluffy) {
+        if (err) return console.error(err);
+        fluffy.speak();
+    });
+});
 
 const app = express();
 const port = process.env.PORT || 8123;
@@ -43,7 +74,7 @@ app.use('/*', (req, res) => {
     });
 });
 
-app.listen(port, err => {
+app.listen(port, (err) => {
     if (err) {
         return console.error(err);
     }

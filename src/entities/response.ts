@@ -4,7 +4,11 @@ export enum ResponseStatus {
 }
 
 export class Response {
-    constructor(private status: ResponseStatus, private description: string, private requestId?: string) {}
+    constructor(
+        private status: ResponseStatus,
+        private description: string,
+        private requestId?: string,
+    ) {}
 
     public get Status() {
         return this.status;

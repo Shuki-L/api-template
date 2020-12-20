@@ -15,15 +15,22 @@ router.get('/', async (req, res) => {
         //         ],
         //     },
         // };
-        const clusterArn = 'arn:aws:ecs:eu-west-1:995121555896:cluster/sit-dev-02';
+        const clusterArn =
+            'arn:aws:ecs:eu-west-1:995121555896:cluster/sit-dev-02';
         const clusterName = 'sit-dev-02';
         const region = 'eu-west-1';
         const clusterServices = new ClusterServices({ region });
-        const cluster = await clusterServices.getClusterinfo(clusterArn, clusterName)
-        res.status(200).json({cluster});
+        const cluster = await clusterServices.getClusterinfo(
+            clusterArn,
+            clusterName,
+        );
+        res.status(200).json({ cluster });
     } catch (error) {
         const statusCode = error.Code || 500;
-        const response = new Response(ResponseStatus.Error, `error occured while getting test`);
+        const response = new Response(
+            ResponseStatus.Error,
+            `error occured while getting test`,
+        );
         res.status(statusCode).json(response);
     }
 });

@@ -3,7 +3,10 @@ import AWS = require('aws-sdk');
 
 export class AwsS3 {
     private s3: any;
-    constructor(protected awsConfig = {}, protected bucketName = process.env.BUCKET_NAME) {
+    constructor(
+        protected awsConfig = {},
+        protected bucketName = process.env.BUCKET_NAME,
+    ) {
         this.s3 = new AWS.S3(awsConfig);
     }
     public async upload(rawData: any, orgId: string): Promise<any> {

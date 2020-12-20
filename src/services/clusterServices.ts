@@ -10,7 +10,7 @@ export class ClusterServices {
     private ecs: any;
     private result: any;
     private awsEcs;
-    private awsEc2;    
+    private awsEc2;
 
     constructor(protected awsConfig = {}) {
         this.awsEcs = new AwsECS(awsConfig);
@@ -30,27 +30,36 @@ export class ClusterServices {
 
         this.result = [];
         const containersList = await this.awsEcs.getInctences(clusterArn);
-        const containerElements = containersList.map(container => container.split('/')[1]);
-        const containerDetailsList = await this.awsEcs.insctenceDetails(clusterName, containerElements);
+        const containerElements = containersList.map(
+            (container) => container.split('/')[1],
+        );
+        const containerDetailsList = await this.awsEcs.insctenceDetails(
+            clusterName,
+            containerElements,
+        );
 
-        const instanceIds = containerDetailsList.containerInstances.map(containerDetails => {
-            return containerDetails.ec2InstanceId;
-        });
+        const instanceIds = containerDetailsList.containerInstances.map(
+            (containerDetails) => {
+                return containerDetails.ec2InstanceId;
+            },
+        );
 
         let index = 0;
         cluster['instances'] = [];
         const ipPromises = [];
         const servicePromises = [];
 
-        for (let instanceId of instanceIds) {
+        for (const instanceId of instanceIds) {
             ipPromises.push(this.awsEc2.getInstanceIp(instanceId));
-            servicePromises.push(this.getTaskInfo(clusterArn, containerElements[index]));
+            servicePromises.push(
+                this.getTaskInfo(clusterArn, containerElements[index]),
+            );
             index++;
         }
         const ips = await Promise.all(ipPromises);
         // const services = await Promise.all(servicePromises);
-        let services = [];
-        for (let servicePromise of servicePromises) {
+        const services = [];
+        for (const servicePromise of servicePromises) {
             services.push(await servicePromise);
         }
 
@@ -70,19 +79,25 @@ export class ClusterServices {
         let tasksList = [];
         for (let index = 0; index < containers.length; index++) {
             const container = containers[index];
-            let list = await this.awsEcs.getTasks(clusterArn, container);
+            const list = await this.awsEcs.getTasks(clusterArn, container);
             tasksList = tasksList.concat(list);
         }
-        const res = await this.awsEcs.getTaskStatusBatch(clusterArn, tasksList)
+        const res = await this.awsEcs.getTaskStatusBatch(clusterArn, tasksList);
         return res;
     }
 
-    private async getTaskInfo(clusterArn: string, containerInstance: string): Promise<any[]> {
-        let tasks = [];
-        const taskArns = await this.awsEcs.getTasks(clusterArn, containerInstance);
+    private async getTaskInfo(
+        clusterArn: string,
+        containerInstance: string,
+    ): Promise<any[]> {
+        const tasks = [];
+        const taskArns = await this.awsEcs.getTasks(
+            clusterArn,
+            containerInstance,
+        );
         // console.log(taskArns);
         // if (taskArns.length == 0) return [];
-        for (let taskArn of taskArns) {
+        for (const taskArn of taskArns) {
             const taskName = await this.awsEcs.getTaskName(clusterArn, taskArn);
             const task = { name: taskName };
             tasks.push(task);
@@ -91,4 +106,3 @@ export class ClusterServices {
     }
 }
 export default ClusterServices;
-

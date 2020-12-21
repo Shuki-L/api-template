@@ -5,9 +5,14 @@
     "module": "commonjs",
     "outDir": "dist",
     "sourceMap": true,
+    "esModuleInterop": true,
     "experimentalDecorators": true,
     "keyofStringsOnly": true,
-    "resolveJsonModule": true //to load json files
+    "resolveJsonModule": true, //to load json files
+    "typeRoots": [
+      "./custom_typings",
+      "./node_modules/@types"
+    ],
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]

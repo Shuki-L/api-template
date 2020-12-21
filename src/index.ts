@@ -1,26 +1,30 @@
 import bodyParser = require('body-parser');
 import express = require('express');
 import cors = require('cors');
+import * as dotenv from 'dotenv';
+
+import health from './routers/health';
+import auth from './routers/auth';
+import users from './routers/users';
 
 const mongoose = require('mongoose');
 
-import health = require('./routes/health');
-import test = require('./routes/test');
-import clusters = require('./routes/clusters');
-import dashboard = require('./routes/dashboard');
-import statuses = require('./routes/statuses');
-import logs = require('./routes/logs');
+dotenv.config();
+const app = express();
+const port = process.env.PORT || 8123;
 
-const configDB = require('./config/database');
+app.use(cors());
+app.use(bodyParser.json({ limit: '5mb' }));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // configuration ===============================================================
-mongoose.connect(configDB.url, {
+mongoose.connect(process.env.MONGODB_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-}); // connect to our database
-// mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true});
-
-// mongoose.connect('mongodb://localhost/test', {useNewUrlParser: true});
+    useCreateIndex: true,
+    useFindAndModify: false,
+}).
+catch(error => {console.log(error); process.exit(1);});; // connect to our database
 
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -52,20 +56,9 @@ db.once('open', function () {
     });
 });
 
-const app = express();
-const port = process.env.PORT || 8123;
-
-app.use(cors());
-app.use(bodyParser.json({ limit: '5mb' }));
-app.use(bodyParser.urlencoded({ extended: true }));
-
 app.use('/api/v1/health', health);
-app.use('/api/v1/test', test);
-app.use('/api/v1/clusters', clusters);
-app.use('/api/v1/dashboard', dashboard);
-app.use('/api/v1/statuses', statuses);
-
-app.use('/api/v1/logs', logs);
+app.use('/api/v1/auth', auth);
+app.use('/api/v1/users', users);
 
 app.use('/*', (req, res) => {
     res.status(404).json({
@@ -74,12 +67,13 @@ app.use('/*', (req, res) => {
     });
 });
 
-app.listen(port, (err) => {
-    if (err) {
-        return console.error(err);
-    }
-    /* tslint:disable-next-line: no-console */
-    return console.log(`server is listening on ${port}`);
-});
+
+app.listen(port, () => {
+    console.info(`Server ready on port ${port}`);
+  });
+
+//   app.listen(port).on("error",  { console.log("ss")});
+
+
 
 module.exports = app;

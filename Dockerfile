@@ -11,6 +11,7 @@ WORKDIR /template-api
 # Copy all root user files to destination workdir
 COPY package*.json ./
 COPY tsconfig.json ./
+COPY custom_typings ./custom_typings
 COPY src ./src
 
 RUN npm install && \

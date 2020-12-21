@@ -1,20 +1,20 @@
 version: '2.1'
 services:
-    template-api:
-        container_name: template-api
-        build:
-            context: .
-            dockerfile: Dockerfile
-        # environment:
-        # - AWS_REGION=${AWS_REGION}
-        # - MINI_CONNECTOR_BUCKET=${MINI_CONNECTOR_BUCKET}
-        # - MINI_CONNECTOR_QUEUE=${MINI_CONNECTOR_QUEUE}
-        # - AWS_ENDPOINT_SQS=${AWS_ENDPOINT_SQS}
-        ports:
-            - 8123:8123
-        restart: always
-        depends_on:
-            - mongo
+    # template-api:
+    #     container_name: template-api
+    #     build:
+    #         context: .
+    #         dockerfile: Dockerfile
+    #     environment:
+    #         - MONGODB_URI=mongodb://mongo:27017/mydb
+    #         - JWT_SECRET=secretkeyhere
+    #     # - MINI_CONNECTOR_QUEUE=${MINI_CONNECTOR_QUEUE}
+    #     # - AWS_ENDPOINT_SQS=${AWS_ENDPOINT_SQS}
+    #     ports:
+    #         - 8123:8123
+    #     restart: always
+    #     depends_on:
+    #         - mongo
     mongo:
         image: mongo
         ports:

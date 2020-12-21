@@ -19,7 +19,10 @@
             "name": "Launch TS Program",
             "runtimeArgs": ["-r", "ts-node/register", "--harmony"],
             "args": ["${workspaceFolder}/src/index.ts"],
-            "env": { "AWS_PROFILE": "strln" }
+            "env": {
+                 "MONGODB_URI": "mongodb://localhost:27017/mydb",
+                 "HOST" : "http://localhost:8123"
+                }
         },
         {
             "type": "node",
